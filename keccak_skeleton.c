@@ -79,6 +79,8 @@ static void theta(uint64_t *state)
             state[x + 5 * y] ^= D[x];
         }
     }
+
+
 }
 
 static void rho(uint64_t *state) {
@@ -190,7 +192,7 @@ void printvec(unsigned long long state[25])
     int i=2, j=3;
     for(int count = 0 ; count < 5; count++){
         for(int count2 = 0 ; count2 < 5; count2++){
-            printf("%016llx,\t ",state[i * 5 + j]);
+            printf("%016llX,\t ",state[i * 5 + j]);
             j = (j + 1) % 5;
         }
         printf("\n");
@@ -206,13 +208,29 @@ int main(void)
 
     keccak_absorb(s, r_bytes, msg, sizeof(msg), pad);
 
+    printf("Initial state:\n");
     printvec(s);
-    theta(s);
-    printvec(s);
+    printf("\n\n");
 
+    theta(s);
+    printf("After theta:\n");
     printvec(s);
+    printf("\n\n");
+
     rho(s);
+    printf("After rho:\n");
     printvec(s);
+    printf("\n\n");
+
+    pi(s);
+    printf("After pi:\n");
+    printvec(s);
+    printf("\n\n");
+
+    chi(s);
+    printf("After chi:\n");
+    printvec(s);
+    printf("\n\n");
 
     return 0;
 }
