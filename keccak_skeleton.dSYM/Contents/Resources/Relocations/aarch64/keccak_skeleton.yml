@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/mingyulee/Desktop/Github/SHA-3/keccak_skeleton'
+relocations:     []
+...

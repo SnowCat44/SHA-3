@@ -112,12 +112,27 @@ static void pi(uint64_t *state) {
     }
 }
 
-static void chi(uint64_t *state) {
-    /* TODO */
+static void chi(uint64_t *state)
+{
+    uint64_t tmp[25];
+    int x, y;
+
+    for (x = 0; x < 5; x++) {
+        for (y = 0; y < 5; y++) {
+            tmp[x + 5 * y] = state[x + 5 * y];
+        }
+    }
+
+    for (x = 0; x < 5; x++) {
+        for (y = 0; y < 5; y++) {
+            state[x + 5 * y] = tmp[x + 5 * y] ^ ((~tmp[(x + 1) % 5 + 5 * y]) & tmp[(x + 2) % 5 + 5 * y]);
+        }
+    }
 }
 
-static void iota(uint64_t *state, unsigned int round) {
-    /* TODO */
+static void iota(uint64_t *state, unsigned int round)
+{
+    state[0] ^= KeccakF_RoundConstants[round];
 }
 
 static void KeccakF1600_StatePermute(uint64_t *state) {
@@ -172,14 +187,14 @@ static void keccak_squeezeblocks(uint8_t *h, size_t nblocks,
 
 void printvec(unsigned long long state[25])
 {
-    int i=3, j=3;
-    for(int count =0 ; count < 5; count++){
-        for(int count2 =0 ; count2 < 5; count2++){
-            printf("%016llX,\t ",state[i*5+j]);
-            j = (j+1)%5;
+    int i=2, j=3;
+    for(int count = 0 ; count < 5; count++){
+        for(int count2 = 0 ; count2 < 5; count2++){
+            printf("%016llx,\t ",state[i * 5 + j]);
+            j = (j + 1) % 5;
         }
         printf("\n");
-        i = (i+1)%5;
+        i = (i + 4) % 5;
     }
 }
 
