@@ -1,0 +1,42 @@
+// static void keccak_inc_init(uint64_t *s_inc) {
+//     size_t i;
+
+//     for (i = 0; i < 25; ++i) {
+//         s_inc[i] = 0;
+//     }
+//     s_inc[25] = 0;
+// }
+
+// static void keccak_inc_absorb(uint64_t *s_inc, uint32_t r, const uint8_t *m,
+//                               size_t mlen) {
+//     size_t i;
+
+//     /* Recall that s_inc[25] is the non-absorbed bytes xored into the state */
+//     while (mlen + s_inc[25] >= r) { // 이 부분에서 범위가 넘어가는지 계속 검사
+//         for (i = 0; i < r - (uint32_t)s_inc[25]; i++) {
+//             /* Take the i'th byte from message
+//                xor with the s_inc[25] + i'th byte of the state; little-endian */
+//             s_inc[(s_inc[25] + i) >> 3] ^= (uint64_t)m[i] << (8 * ((s_inc[25] + i) & 0x07));
+//         }
+//         mlen -= (size_t)(r - s_inc[25]);
+//         m += r - s_inc[25];
+//         s_inc[25] = 0;
+
+//         KeccakF1600_StatePermute(s_inc);
+//     }
+
+//     for (i = 0; i < mlen; i++) { // r 비트가 됬을 때, permutation을 수행
+//         s_inc[(s_inc[25] + i) >> 3] ^= (uint64_t)m[i] << (8 * ((s_inc[25] + i) & 0x07));
+//     }
+//     s_inc[25] += mlen;
+// }
+
+// static void keccak_inc_finalize(uint64_t *s_inc, uint32_t r, uint8_t p) {
+//     /* After keccak_inc_absorb, we are guaranteed that s_inc[25] < r,
+//        so we can always use one more byte for p in the current state. */
+//     s_inc[s_inc[25] >> 3] ^= (uint64_t)p << (8 * (s_inc[25] & 0x07));
+//     s_inc[(r - 1) >> 3] ^= (uint64_t)128 << (8 * ((r - 1) & 0x07));
+//     s_inc[25] = 0;
+// }
+
+// inc_absorb + finalize 합친게 inc 안붙은 absorb라고 생각하면 됨 
